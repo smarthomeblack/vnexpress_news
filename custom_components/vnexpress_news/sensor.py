@@ -9,6 +9,7 @@ import os
 from datetime import datetime, timedelta
 from google.api_core import exceptions
 import logging
+import re
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.const import CONF_NAME
@@ -318,13 +319,11 @@ class VNExpressNewsSensor(SensorEntity, RestoreEntity):
         self._attr_unique_id = "vnexpress_news_sensor"
         self._attr_icon = "mdi:newspaper"
         _LOGGER.debug("Hoàn thành khởi tạo sensor")
+        self._attr_scan_interval = SCAN_INTERVAL
     async def async_added_to_hass(self):
-        """Khôi phục state và attributes khi khởi động lại Home Assistant."""
-        last_state = await self.async_get_last_state()
-        if last_state:
-            self._state = last_state.state
-            self._attributes = dict(last_state.attributes)
-            _LOGGER.info("Khôi phục trạng thái sensor từ lần trước")
+        """Không khôi phục trạng thái, luôn cập nhật mới khi khởi động."""
+        await self.async_update()
+        self.async_schedule_update_ha_state(force_refresh=True)
 
     async def async_update(self):
         """Cập nhật sensor."""
@@ -336,7 +335,10 @@ class VNExpressNewsSensor(SensorEntity, RestoreEntity):
             # Cập nhật trạng thái
             self._state = f"Có {new_count} tin mới" if new_count > 0 else "Không có tin mới"
             # Cập nhật thuộc tính
-            self._attributes = dict(sorted(news.items(), key=lambda x: int(x[0].split()[1])))
+            def extract_tin_number(key):
+              match = re.search(r'Tin (\d+)', key)
+              return int(match.group(1)) if match else 9999
+            self._attributes = dict(sorted(news.items(), key=lambda x: extract_tin_number(x[0])))  
             self._titles_data = await load_titles(self.hass)
             _LOGGER.info(f"Cập nhật thành công, state: {self._state}, số tin: {len(self._attributes)}")
         except Exception as e:
