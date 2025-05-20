@@ -1,0 +1,2 @@
+[DEFAULT]
+GEMINI_API_KEY=keyapi
