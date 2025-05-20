@@ -68,13 +68,15 @@ Tự động lấy và tóm tắt tin tức mới nhất từ VnExpress bằng A
 ## 📂 Cấu Trúc File
 
 ```
-vnexpress_news/
-├── __init__.py
-├── sensor.py
-├── manifest.json
+├── configuration.yaml
+├── custom_components/
+│   ├── vnexpress_news/
+│   │   ├── __init__.py
+│   │   ├── manifest.py
+│   │   ├── sensor.py
+│   │   └── ...
 ├── config.txt      ← cần đưa vào thư mục config của Home Assistant
 ├── titles.txt      ← tự sinh ra để lưu tin đã xử lý
-└── 1.png           ← ảnh minh hoạ demo
 ```
 
 ---

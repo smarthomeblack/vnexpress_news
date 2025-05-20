@@ -1,8 +1,8 @@
 {
   "domain": "vnexpress_news",
   "name": "VNExpress News",
-  "version": "1.0.2",
-  "documentation": "https://github.com/yourusername/vnexpress_news",
+  "version": "2025.20.5",
+  "documentation": "https://github.com/smarthomeblack/vnexpress_news",
   "requirements": [
     "feedparser==6.0.11",
     "requests==2.32.3",
@@ -10,6 +10,6 @@
     "google-generativeai==0.8.2",
     "aiohttp==3.11.18"
   ],
-  "codeowners": ["@yourusername"],
+  "codeowners": ["@smarthomeblack"],
   "iot_class": "cloud_polling"
 }
